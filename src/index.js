@@ -48,12 +48,20 @@ class Todo extends React.Component{
         })
     }
 
-    deleteTask(index){
-        var tasks = this.state.tasks.slice()
-        tasks.splice(index, 1)
-        this.setState({
-            tasks:tasks,
-        })
+    deleteTask(index, list){
+        if (list===1){
+            var tasks = this.state.tasks.slice()
+            tasks.splice(index, 1)
+            this.setState({
+                tasks:tasks,
+            })
+        } else if (list===2){
+            var tasks = this.state.comTasks.slice()
+            tasks.splice(index, 1)
+            this.setState({
+                comTasks:tasks,
+            })
+        }
     }
 
     render(){
@@ -72,7 +80,7 @@ class Todo extends React.Component{
                             <div key={index}>
                                 {valueNode}
                                 <button onClick={() => this.checkTask(index)}><img src="./assets/img/checked.png" alt="Done"/></button>
-                                <button onClick={() => this.deleteTask(index)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                                <button onClick={() => this.deleteTask(index, 1)}><img src="./assets/img/error.png" alt="Delete"/></button>
                             </div>
                         )
                     }) }
@@ -84,8 +92,8 @@ class Todo extends React.Component{
                         return (
                             <div key={index}>
                                 {valueNode}
-                                <button onClick={() => this.uncheckTask(index)}><img src="./assets/img/checked.png" alt="Done"/></button>
-                                <button onClick={() => this.deleteTask(index)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                                <button onClick={() => this.checkTask(index)}><img src="./assets/img/checked.png" alt="Done"/></button>
+                                <button onClick={() => this.deleteTask(index, 2)}><img src="./assets/img/error.png" alt="Delete"/></button>
                             </div>
                         )
                     }) }
