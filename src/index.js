@@ -7,7 +7,6 @@ class Todo extends React.Component{
         this.state = ({
             currentText:"",
             tasks:[],
-            comTasks:[],
         })
     }
 
@@ -26,42 +25,22 @@ class Todo extends React.Component{
         }
     }
 
-    checkTask(index){
+    checkTask(task){
         var tasks = this.state.tasks.slice()
-        var comTasks = this.state.comTasks.slice()
-        comTasks.unshift(tasks[index])
+        var index = tasks.indexOf(task)
+        tasks[index].completed = !tasks[index].completed 
+        this.setState({
+            tasks:tasks,
+        })
+    }
+
+    deleteTask(task){
+        var tasks = this.state.tasks.slice()
+        var index = tasks.indexOf(task)
         tasks.splice(index, 1)
         this.setState({
             tasks:tasks,
-            comTasks:comTasks,
         })
-    }
-
-    uncheckTask(index){
-        var tasks = this.state.tasks.slice()
-        var comTasks = this.state.comTasks.slice()
-        tasks.push(comTasks[index])
-        comTasks.splice(index, 1)
-        this.setState({
-            tasks:tasks,
-            comTasks:comTasks,
-        })
-    }
-
-    deleteTask(index, list){
-        if (list===1){
-            var tasks = this.state.tasks.slice()
-            tasks.splice(index, 1)
-            this.setState({
-                tasks:tasks,
-            })
-        } else if (list===2){
-            var tasks = this.state.comTasks.slice()
-            tasks.splice(index, 1)
-            this.setState({
-                comTasks:tasks,
-            })
-        }
     }
 
     render(){
@@ -72,28 +51,44 @@ class Todo extends React.Component{
                     <h3>Welcome to your tape</h3>
                     <input ref={el => this.inputEle = el} type="text" placeholder="Enter New Task!" onKeyDown={e => this.handleKeypress(e)}/>
                 </div>
+                
+                <br/>
+                <div>{
+                    this.state.tasks.filter(task => !task.completed).length >0 &&
+                    <h4>TO COMPLETE</h4>
+                }</div>
+                <br/>
+
                 <div>
                 {
-                    this.state.tasks.map((task, index) => {
+                    this.state.tasks.filter(task => !task.completed).map((task, index) => {
                         const valueNode = task.value
                         return (
                             <div key={index}>
                                 {valueNode}
-                                <button onClick={() => this.checkTask(index)}><img src="./assets/img/checked.png" alt="Done"/></button>
-                                <button onClick={() => this.deleteTask(index, 1)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                                <button onClick={() => this.checkTask(task)}><img src="./assets/img/checked.png" alt="Done"/></button>
+                                <button onClick={() => this.deleteTask(task)}><img src="./assets/img/error.png" alt="Delete"/></button>
                             </div>
                         )
                     }) }
                 </div>
+
+                <br/>
+                <div>{
+                    this.state.tasks.filter(task => task.completed).length >0 &&
+                    <h4>COMPLETED</h4>
+                }</div>
+                <br/>
+
                 <div>
                 {
-                    this.state.comTasks.map((task, index) => {
+                    this.state.tasks.filter(task => task.completed).map((task, index) => {
                         const valueNode = (<strike>{task.value}</strike>)
                         return (
                             <div key={index}>
-                                {valueNode}
-                                <button onClick={() => this.checkTask(index)}><img src="./assets/img/checked.png" alt="Done"/></button>
-                                <button onClick={() => this.deleteTask(index, 2)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                                <strike>{valueNode}</strike>
+                                <button onClick={() => this.checkTask(task)}><img src="./assets/img/checked.png" alt="Done"/></button>
+                                <button onClick={() => this.deleteTask(task)}><img src="./assets/img/error.png" alt="Delete"/></button>
                             </div>
                         )
                     }) }
