@@ -4,9 +4,12 @@ import ReactDOM from 'react-dom'
 class Todo extends React.Component{
     constructor(props){
         super(props);
+        var taskString = "tasks"
+        console.log(localStorage.getItem("tasks"))
+        var tasks = JSON.parse(localStorage.getItem(taskString) || '[]')    
         this.state = ({
             currentText:"",
-            tasks:[],
+            tasks:tasks,
         })
     }
 
@@ -21,6 +24,7 @@ class Todo extends React.Component{
                 tasks:tasks,
             }, () => {
                 this.inputEle.value = ""
+                localStorage.setItem("tasks", JSON.stringify(tasks))
             })
         }
     }
@@ -31,6 +35,8 @@ class Todo extends React.Component{
         tasks[index].completed = !tasks[index].completed 
         this.setState({
             tasks:tasks,
+        }, () => {
+            localStorage.setItem("tasks", JSON.stringify(tasks))
         })
     }
 
@@ -40,6 +46,8 @@ class Todo extends React.Component{
         tasks.splice(index, 1)
         this.setState({
             tasks:tasks,
+        }, () => {
+            localStorage.setItem("tasks", tasks)
         })
     }
 
