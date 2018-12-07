@@ -1,0 +1,23 @@
+*{
+    text-align: center;
+}
+
+.taskView{
+    padding: 10px;
+    margin: 20px;    
+    display: flex;
+    max-width: 600px;
+    border: 2px solid blue;
+    margin: auto; 
+}
+
+.taskText{
+    text-align: left;
+    max-width: 450px;
+    flex-grow: 100;
+}
+
+.taskButtons{
+    flex-grow: 2;
+    /* float: right; */
+}

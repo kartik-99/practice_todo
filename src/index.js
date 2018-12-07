@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './index.css'
 
 class Todo extends React.Component{
     constructor(props){
         super(props);
         var taskString = "tasks"
         console.log(localStorage.getItem("tasks"))
-        var tasks = JSON.parse(localStorage.getItem(taskString) || '[]')    
+        var tasks = JSON.parse(localStorage.getItem(taskString) || '[]') 
         this.state = ({
             currentText:"",
             tasks:tasks,
@@ -55,8 +56,8 @@ class Todo extends React.Component{
         return(
             <div>
                 <div>
-                    <h1>To Do</h1>
-                    <h3>Welcome to your tape</h3>
+                    <h1>To-Do</h1>
+                    <h3>What do you want to complete today?</h3>
                     <input ref={el => this.inputEle = el} type="text" placeholder="Enter New Task!" onKeyDown={e => this.handleKeypress(e)}/>
                 </div>
                 
@@ -72,10 +73,12 @@ class Todo extends React.Component{
                     this.state.tasks.filter(task => !task.completed).map((task, index) => {
                         const valueNode = task.value
                         return (
-                            <div key={index}>
-                                {valueNode}
-                                <button onClick={() => this.checkTask(task)}><img src="./assets/img/checked.png" alt="Done"/></button>
-                                <button onClick={() => this.deleteTask(task)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                            <div class="taskView" key={index}>
+                                <div class="taskText">{valueNode}</div>
+                                <div class="taskButtons">
+                                    <button onClick={() => this.checkTask(task)}><img src="./assets/img/checked.png" alt="Done"/></button>
+                                    <button onClick={() => this.deleteTask(task)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                                </div>
                             </div>
                         )
                     }) }
@@ -93,10 +96,12 @@ class Todo extends React.Component{
                     this.state.tasks.filter(task => task.completed).map((task, index) => {
                         const valueNode = (<strike>{task.value}</strike>)
                         return (
-                            <div key={index}>
-                                <strike>{valueNode}</strike>
-                                <button onClick={() => this.checkTask(task)}><img src="./assets/img/checked.png" alt="Done"/></button>
-                                <button onClick={() => this.deleteTask(task)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                            <div class="taskView" key={index}>
+                                <div class="taskText"><strike>{valueNode}</strike></div>
+                                <div class="taskButtons">
+                                    <button onClick={() => this.checkTask(task)}><img src="./assets/img/checked.png" alt="Done"/></button>
+                                    <button onClick={() => this.deleteTask(task)}><img src="./assets/img/error.png" alt="Delete"/></button>
+                                </div>
                             </div>
                         )
                     }) }
